@@ -1,8 +1,7 @@
+import json
 from protocol_handler import ProtocolHandler
 
-
-def create_content(lines):
-    list = [f"<li></li>"]
+def create_html(lines):
     content = '\n'.join(lines)
     return f"""
     <!DOCTYPE html>
@@ -26,9 +25,15 @@ def create_content(lines):
     </html>
     """
      
-def create_html(filename, custom_protocol_handlers : list[ProtocolHandler]):
-    lines = [f"<li><a href='{soc.protocol}://any'><div class='protocol'>{soc.protocol}</div><div class='command'>{soc.command}</div></a></li>" for soc in custom_protocol_handlers]
-    file = open(filename, 'w')
-    content = create_content(lines)
-    file.write(content)
-    file.close()
+def write_files(protocol_handlers : 'list[ProtocolHandler]'):
+    filename = 'handlers'
+    json_file = open(filename + '.json', 'w')
+    json_content = json.dumps(list(map(lambda x: x.__dict__, protocol_handlers)))
+    json_file.write(json_content)
+    json_file.close()
+
+    lines = [f"<li><a href='{ph.protocol}://any'><div class='protocol'>{ph.protocol}</div><div class='command'>{ph.command}</div></a></li>" for ph in protocol_handlers]
+    html_file = open(filename + ".html", 'w')
+    content = create_html(lines)
+    html_file.write(content)
+    html_file.close()
