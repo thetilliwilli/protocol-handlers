@@ -26,7 +26,7 @@ def create_html(lines):
     """
      
 def write_files(protocol_handlers : 'list[ProtocolHandler]'):
-    filename = 'handlers'
+    filename = 'public/handlers'
     json_file = open(filename + '.json', 'w')
     json_content = json.dumps(list(map(lambda x: x.__dict__, protocol_handlers)))
     json_file.write(json_content)
